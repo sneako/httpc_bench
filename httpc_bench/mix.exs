@@ -25,11 +25,9 @@ defmodule HttpcBench.MixProject do
       {:dlhttpc, git: "https://github.com/ferd/dlhttpc.git"},
       {:hackney, "~> 1.15"},
       {:ibrowse, "~> 4.0"},
-      # {:katipo, "~> 0.7"},
       {:mojito, git: "https://github.com/appcues/mojito.git", branch: "autopool"},
       {:timing, git: "https://github.com/lpgauth/timing.git"},
       {:metal, "0.1.1", override: true},
-      # {:metrics, "2.5.0", override: true}
       {:cowboy, "~> 1.0"},
       {:plug_cowboy, "~> 1.0"},
       {:freedom_formatter, "~> 1.0"},

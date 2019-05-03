@@ -3,48 +3,33 @@ defmodule HttpcBench do
   Documentation for HttpcBench.
   """
 
-  @iterations 20480
-
-  @clients [
-    # HttpcBench.Client.Buoy,
-    # HttpcBench.Client.Dlhttpc,
-    #HttpcBench.Client.Hackney,
-    # HttpcBench.Client.Httpc,
-    # HttpcBench.Client.Ibrowse,
-    # HttpcBench.Client.Gun,
-    HttpcBench.Client.Mojito
-  ]
-
-  @request_concurrencies [32, 64, 128, 512, 1024, 2048, 4096]
-
-  @pool_sizes [8, 16, 32, 64, 128, 256]
-
-  @pool_counts [1, 2, 4, 8, 16]
+  alias HttpcBench.Config
 
   def run_server do
     HttpcBench.Server.start([], [])
   end
 
-  def run do
-    results() |> Enum.each(&print_result/1)
-  end
+  def run_clients do
+    :io.format(
+      "Running benchmark...~n~n" <>
+        "Client     PoolCount  PoolSize  Concurrency  Requests/s  Error %~n"
+    )
 
-  defp print_result(result) do
-    IO.inspect(result)
+    results()
   end
 
   def results do
-    for client <- @clients,
-        concurrency <- @request_concurrencies,
-        pool_size <- @pool_sizes,
-        pool_count <- @pool_counts do
+    for client <- Config.clients(),
+        concurrency <- Config.concurrencies(),
+        pool_size <- Config.pool_sizes(),
+        pool_count <- Config.pool_counts() do
       result(client, concurrency, pool_size, pool_count)
       Process.sleep(100)
     end
   end
 
   def result(client, concurrency, pool_size, pool_count) do
-    client_name = client |> to_string |> String.replace_leading("HttpcBench.Client.", "")
+    client_name = client |> to_string |> String.replace_leading("Elixir.HttpcBench.Client.", "")
     name = name(client_name, concurrency, pool_size, pool_count)
 
     case client.start(pool_size, pool_count) do
@@ -69,10 +54,9 @@ defmodule HttpcBench do
             fun,
             name: name,
             concurrency: concurrency,
-            iterations: @iterations,
+            iterations: Config.iterations(),
             output: "output/#{name}" |> String.to_charlist()
           )
-          |> IO.inspect()
 
         qps = results[:success] / (results[:total_time] / 1_000_000)
         errors = results[:errors] / (results[:iterations] * 100)
@@ -89,7 +73,22 @@ defmodule HttpcBench do
           qps: qps,
           errors: errors,
         }
+        |> print_result
     end
+  end
+
+  defp print_result(result) do
+    :io.format(
+      "~-10s ~9B ~9B ~12B ~11B ~8.1f~n",
+      [
+        result.client,
+        result.pool_count,
+        result.pool_size,
+        result.concurrency,
+        trunc(result.qps),
+        result.errors
+      ]
+    )
   end
 
   defp name(client, concurrency, pool_size, pool_count) do
