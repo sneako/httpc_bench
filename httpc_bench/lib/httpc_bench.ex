@@ -59,7 +59,7 @@ defmodule HttpcBench do
           )
 
         qps = results[:success] / (results[:total_time] / 1_000_000)
-        errors = results[:errors] / (results[:iterations] * 100)
+        errors = results[:errors] * 100 / results[:iterations]
 
         client.stop()
 

@@ -27,9 +27,9 @@ defmodule HttpcBench.Server.PlugRouter do
     send_resp(conn, 200, "Hello #{name}!")
   end
 
-  get "/wait" do
-    delay = (conn.params["d"] || "100") |> String.to_integer()
-    :timer.sleep(delay)
+  get "/wait/:delay" do
+    delay = conn.params["delay"] |> String.to_integer()
+    Process.sleep(delay)
     send_resp(conn, 200, "ok")
   end
 end

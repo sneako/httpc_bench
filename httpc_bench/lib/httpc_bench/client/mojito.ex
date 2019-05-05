@@ -3,13 +3,17 @@ defmodule HttpcBench.Client.Mojito do
   alias HttpcBench.Config
 
   def get do
-    Mojito.Pool.request(%Mojito.Request{
+    request = %Mojito.Request{
       method: :get,
       url: Config.url(),
-      headers: Config.headers()
-    })
+      headers: Config.headers(),
+      opts: [timeout: Config.timeout()],
+    }
 
-    :ok
+    case Mojito.Pool.request(request) do
+      {:ok, _} -> :ok
+      {:error, e} -> {:error, e}
+    end
   end
 
   def start(pool_size, pool_count) do
