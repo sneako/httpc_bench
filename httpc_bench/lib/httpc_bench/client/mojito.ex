@@ -16,6 +16,10 @@ defmodule HttpcBench.Client.Mojito do
     end
   end
 
+  def start(1, _pool_count) do
+    {:error, "skipping pool size 1"}
+  end
+
   def start(pool_size, pool_count) do
     Application.put_env(
       :mojito,

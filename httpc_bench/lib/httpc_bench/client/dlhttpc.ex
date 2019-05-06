@@ -24,15 +24,27 @@ defmodule HttpcBench.Client.Dlhttpc do
   end
 
   def start(pool_size, pool_count) do
-    if pool_count > 1 do
-      {:error, "multiple pools not supported"}
-    else
-      :application.ensure_all_started(:dlhttpc)
+    cond do
+      pool_size == 0 ->
+        {:error, "skipping pool size 1"}
 
-      {:ok, _} =
-        :dlhttpc.request(url(), :get, headers(), "", Config.timeout(), max_connections: pool_size)
+      pool_count > 1 ->
+        {:error, "multiple pools not supported"}
 
-      :ok
+      :else ->
+        :application.ensure_all_started(:dlhttpc)
+
+        {:ok, _} =
+          :dlhttpc.request(
+            url(),
+            :get,
+            headers(),
+            "",
+            Config.timeout(),
+            max_connections: pool_size
+          )
+
+        :ok
     end
   end
 

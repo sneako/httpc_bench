@@ -86,7 +86,7 @@ defmodule HttpcBench do
         result.pool_size,
         result.concurrency,
         trunc(result.qps),
-        result.errors
+        result.errors,
       ]
     )
   end

@@ -3,20 +3,25 @@ defmodule HttpcBench.Client.Hackney do
   alias HttpcBench.Config
 
   def get do
-    {:ok, _, _, ref} =
-      :hackney.request(:get, Config.url(), Config.headers(), "", pool: :httpc_bench_hackney)
-
-    {:ok, _} = :hackney.body(ref)
-    :ok
+    with {:ok, _, _, ref} <-
+           :hackney.request(:get, Config.url(), Config.headers(), "", pool: :httpc_bench_hackney),
+         {:ok, _} <- :hackney.body(ref) do
+      :ok
+    end
   end
 
   def start(pool_size, pool_count) do
-    if pool_count > 1 do
-      {:error, "multiple pools not supported"}
-    else
-      {:ok, _} = :application.ensure_all_started(:hackney)
-      opts = [pool_size: pool_size, timeout: HttpcBench.Config.timeout()]
-      :ok = :hackney_pool.start_pool(:httpc_bench_hackney, opts)
+    cond do
+      pool_size == 0 ->
+        {:error, "skipping pool size 1"}
+
+      pool_count > 1 ->
+        {:error, "multiple pools not supported"}
+
+      :else ->
+        {:ok, _} = :application.ensure_all_started(:hackney)
+        opts = [pool_size: pool_size, timeout: HttpcBench.Config.timeout()]
+        :ok = :hackney_pool.start_pool(:httpc_bench_hackney, opts)
     end
   end
 

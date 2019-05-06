@@ -10,17 +10,22 @@ defmodule HttpcBench.Client.Buoy do
   end
 
   def start(pool_size, pool_count) do
-    if pool_count > 1 do
-      {:error, "multiple pools not supported"}
-    else
-      {:ok, _} = :buoy_app.start()
+    cond do
+      pool_size == 0 ->
+        {:error, "skipping pool size 1"}
 
-      :ok =
-        :buoy_pool.start(
-          Config.buoy_url(),
-          backlog_size: Config.pipelining(),
-          pool_size: pool_size
-        )
+      pool_count > 1 ->
+        {:error, "multiple pools not supported"}
+
+      :else ->
+        {:ok, _} = :buoy_app.start()
+
+        :ok =
+          :buoy_pool.start(
+            Config.buoy_url(),
+            backlog_size: Config.pipelining(),
+            pool_size: pool_size
+          )
     end
   end
 
