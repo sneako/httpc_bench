@@ -6,7 +6,7 @@ config :httpc_bench,
   iterations: 500_000,
   concurrencies: [16384, 8192, 4096, 2048, 1024, 512, 256],
   pool_sizes: [512, 256, 128, 64, 32, 1],
-  pool_counts: [32, 16, 4, 1],
+  pool_counts: [32, 16, 8, 4, 1],
   clients: [
     HttpcBench.Client.Mojito,
     HttpcBench.Client.Buoy,
