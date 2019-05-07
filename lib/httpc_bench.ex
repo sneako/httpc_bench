@@ -98,6 +98,9 @@ defmodule HttpcBench do
     end
   end
 
+  ## Don't print skipped runs
+  defp print_result(%{message: _}, _opts), do: :ok
+
   defp print_result(result, opts) do
     fields = [
       result.client,

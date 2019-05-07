@@ -19,7 +19,7 @@ defmodule HttpcBench.Client.Ibrowse do
     end
   end
 
-  def start(pool_count, pool_size) do
+  def start(pool_size, pool_count) do
     cond do
       pool_size == 1 ->
         {:error, "skipping pool size 1"}
@@ -28,7 +28,7 @@ defmodule HttpcBench.Client.Ibrowse do
         {:error, "multiple pools not supported"}
 
       :else ->
-        :ok = :application.start(:ibrowse)
+        {:ok, _} = :application.ensure_all_started(:ibrowse)
 
         options = [
           max_sessions: pool_size,
@@ -38,6 +38,8 @@ defmodule HttpcBench.Client.Ibrowse do
         Config.hostname()
         |> String.to_charlist()
         |> :ibrowse.set_dest(Config.port(), options)
+
+        :ok
     end
   end
 
