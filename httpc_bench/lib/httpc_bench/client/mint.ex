@@ -26,5 +26,6 @@ defmodule HttpcBench.Client.Mint do
   end
 
   def stop do
+    :ok = :application.stop(:mojito)
   end
 end
