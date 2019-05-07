@@ -19,10 +19,10 @@ defmodule HttpcBench do
   end
 
   def results do
-    for client <- Config.clients(),
-        concurrency <- Config.concurrencies(),
+    for concurrency <- Config.concurrencies(),
         pool_size <- Config.pool_sizes(),
-        pool_count <- Config.pool_counts() do
+        pool_count <- Config.pool_counts(),
+        client <- Config.clients() do
       result(client, concurrency, pool_size, pool_count)
       Process.sleep(100)
     end
