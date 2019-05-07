@@ -11,7 +11,7 @@ defmodule HttpcBench.Client.Katipo do
 
   def start(pool_size, pool_count) do
     cond do
-      pool_size == 0 ->
+      pool_size == 1 ->
         {:error, "skipping pool size 1"}
 
       pool_count > 1 ->
