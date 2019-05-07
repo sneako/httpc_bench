@@ -9,26 +9,25 @@ defmodule HttpcBench do
     HttpcBench.Server.start([], [])
   end
 
-  def run_clients do
-    :io.format(
-      "Running benchmark...~n~n" <>
-        "Client     PoolCount  PoolSize  Concurrency  Requests/s  Error %~n"
-    )
-
-    results()
+  def run_clients(opts \\ []) do
+    print_header(opts)
+    print_results(opts)
+    print_footer(opts)
   end
 
-  def results do
+  defp print_results(opts) do
     for concurrency <- Config.concurrencies(),
         pool_size <- Config.pool_sizes(),
         pool_count <- Config.pool_counts(),
         client <- Config.clients() do
       result(client, concurrency, pool_size, pool_count)
+      |> print_result(opts)
+
       Process.sleep(100)
     end
   end
 
-  def result(client, concurrency, pool_size, pool_count) do
+  defp result(client, concurrency, pool_size, pool_count) do
     client_name = client |> to_string |> String.replace_leading("Elixir.HttpcBench.Client.", "")
     name = name(client_name, concurrency, pool_size, pool_count)
 
@@ -73,22 +72,59 @@ defmodule HttpcBench do
           qps: qps,
           errors: errors,
         }
-        |> print_result
     end
   end
 
-  defp print_result(result) do
-    :io.format(
-      "~-10s ~9B ~9B ~12B ~11B ~8.1f~n",
-      [
-        result.client,
-        result.pool_count,
-        result.pool_size,
-        result.concurrency,
-        trunc(result.qps),
-        result.errors,
-      ]
-    )
+  defp print_header(opts) do
+    case output_format(opts) do
+      :text ->
+        :io.format(
+          "Running benchmark...~n~n" <>
+            "Client     PoolCount  PoolSize  Concurrency  Requests/s  Error %~n"
+        )
+
+      :html ->
+        ~S"""
+        <table>
+        <thead><tr><th>Client</th><th>Pool Count</th><th>Pool Size</th><th>Concurrency</th><th>Req/sec</th><th>Error %</th></tr></thead>
+        <tfoot><tr><th>Client</th><th>Pool Count</th><th>Pool Size</th><th>Concurrency</th><th>Req/sec</th><th>Error %</th></tr></tfoot>
+        """
+        |> String.trim
+        |> IO.puts()
+
+      :csv ->
+        "Client,Pool Count,Pool Size,Concurrency,Req/sec,Error %"
+        |> IO.puts()
+    end
+  end
+
+  defp print_result(result, opts) do
+    fields = [
+      result.client,
+      result.pool_count,
+      result.pool_size,
+      result.concurrency,
+      trunc(result.qps),
+      round(result.errors * 10) / 10.0,
+    ]
+
+    case output_format(opts) do
+      :text ->
+        :io.format("~-10s ~9B ~9B ~12B ~11B ~8.1f~n", fields)
+
+      :html ->
+        "<tr><td>#{Enum.join(fields, "</td><td>")}</td></tr>" |> IO.puts()
+
+      :csv ->
+        fields |> Enum.join(",") |> IO.puts()
+    end
+  end
+
+  defp print_footer(opts) do
+    case output_format(opts) do
+      :html -> "</table>" |> IO.puts()
+      _ -> :nothing_to_do
+    end
   end
 
   defp name(client, concurrency, pool_size, pool_count) do
@@ -96,10 +132,7 @@ defmodule HttpcBench do
     |> String.to_atom()
   end
 
-  defp lookup(results, key) do
-    case Keyword.get(results, key) do
-      {_, value} -> value
-      _ -> nil
-    end
+  def output_format(opts) do
+    opts[:output] || Application.get_env(:httpc_bench, :output, :text)
   end
 end

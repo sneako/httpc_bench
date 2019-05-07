@@ -3,7 +3,7 @@ defmodule HttpcBenchTest do
   doctest HttpcBench
 
   test "runs a brief suite of benchmarks" do
-    {:ok, pid} = HttpcBench.run_server()
+    {:ok, _pid} = HttpcBench.run_server()
     HttpcBench.run_clients()
   end
 end

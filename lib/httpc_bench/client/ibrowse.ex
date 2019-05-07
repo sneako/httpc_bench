@@ -42,6 +42,6 @@ defmodule HttpcBench.Client.Ibrowse do
   end
 
   def stop do
-    :application.stop(:ibrowse)
+    :ok = :application.stop(:ibrowse)
   end
 end

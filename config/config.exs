@@ -3,6 +3,7 @@ use Mix.Config
 config :logger, level: :error
 
 config :httpc_bench,
+  output: :text, # one of: [:text, :html, :csv]
   iterations: 500_000,
   concurrencies: [16384, 8192, 4096, 2048, 1024, 512, 256],
   pool_sizes: [512, 256, 128, 64, 32, 1],
@@ -15,7 +16,6 @@ config :httpc_bench,
     HttpcBench.Client.Httpc,
     HttpcBench.Client.Ibrowse,
     HttpcBench.Client.Mint,
-    # HttpcBench.Client.Katipo,
   ],
   url: System.get_env("URL") || "http://127.0.0.1:8080/wait/10",
   hostname: System.get_env("HOSTNAME") || "127.0.0.1",

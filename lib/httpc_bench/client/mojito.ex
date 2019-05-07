@@ -26,6 +26,7 @@ defmodule HttpcBench.Client.Mojito do
       max_overflow: 0,
       pools: pool_count,
     ]
+
     Application.put_env(:mojito, :pool_opts, pool_opts)
 
     {:ok, _} = :application.ensure_all_started(:mojito)
