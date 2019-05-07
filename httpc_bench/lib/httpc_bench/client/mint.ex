@@ -16,13 +16,13 @@ defmodule HttpcBench.Client.Mint do
     end
   end
 
-  def start(_, 1) do
+  def start(1, 1) do
     {:ok, _} = :application.ensure_all_started(:mojito)
     :ok
   end
 
-  def start(_pool_count, _pool_size) do
-    {:error, "multiple pools not supported"}
+  def start(_pool_size, _pool_count) do
+    {:error, "pools not supported"}
   end
 
   def stop do
