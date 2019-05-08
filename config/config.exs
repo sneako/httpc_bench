@@ -10,6 +10,7 @@ config :httpc_bench,
   pool_counts: [32, 16, 8, 4, 1],
   clients: [
     HttpcBench.Client.Mojito,
+    HttpcBench.Client.MachineGun,
     HttpcBench.Client.Buoy,
     HttpcBench.Client.Dlhttpc,
     HttpcBench.Client.Hackney,

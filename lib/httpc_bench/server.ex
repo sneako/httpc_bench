@@ -4,10 +4,9 @@ defmodule HttpcBench.Server do
   def start(_type, _args) do
     children = [
       Plug.Adapters.Cowboy.child_spec(
-        :http,
-        HttpcBench.Server.PlugRouter,
-        [],
-        port: HttpcBench.Config.port()
+        scheme: :http,
+        plug: HttpcBench.Server.PlugRouter,
+        options: [port: HttpcBench.Config.port()]
       ),
     ]
 
