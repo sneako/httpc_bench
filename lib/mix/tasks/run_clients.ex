@@ -2,6 +2,8 @@ defmodule Mix.Tasks.RunClients do
   use Mix.Task
 
   def run(argv) do
+    Mix.Task.run("app.start")
+
     argv
     |> argv_to_opts
     |> HttpcBench.run_clients()
@@ -16,4 +18,3 @@ defmodule Mix.Tasks.RunClients do
     end
   end
 end
-

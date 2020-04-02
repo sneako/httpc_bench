@@ -16,11 +16,8 @@ A path like `/wait/10` will wait 10 ms before returning.
 
 ## Running
 
-`mix run_server` runs the test server.
-
-`mix run_clients [output-format]` runs the clients and emits benchmark
-information to stdout in the specified format: `text` (default), `html`,
-or `csv`.
+Start the test server with `cd httpc_bench && MIX_ENV=prod mix run --no-halt run_server.exs`
+Start the client with: `cd httpc_bench && MIX_ENV=prod mix run_clients`
 
 ## Building on Ubuntu 18.04
 
@@ -37,3 +34,15 @@ mix compile
 CFLAGS='-stc=c11' mix compile
 mix compile
 ```
+## Terraform
+See all variables in `terraform/variables.tf`.
+Copy `terraform/my-vars.tfvars.example` to `terraform/my-vars.tfvars` and populate the variables.
+
+```bash
+cd terraform
+terraform init
+terraform apply --var-file=my-vars.tfvars
+```
+
+After terraform completes the server's public ip addresses will be output for you.
+`

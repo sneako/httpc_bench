@@ -7,12 +7,33 @@ defmodule HttpcBench.Client.Mojito do
       method: :get,
       url: Config.url(),
       headers: Config.headers(),
-      opts: [timeout: Config.timeout()],
+      opts: [timeout: Config.timeout()]
     }
 
-    case Mojito.Pool.request(request) do
-      {:ok, _} -> :ok
-      {:error, e} -> {:error, e}
+    request(request)
+  end
+
+  def post do
+    request = %Mojito.Request{
+      method: :post,
+      url: Config.url(),
+      headers: Config.post_headers(),
+      body: Config.post_body(),
+      opts: [timeout: Config.timeout()]
+    }
+
+    request(request)
+  end
+
+  defp request(req) do
+    try do
+      case Mojito.request(req) do
+        {:ok, _} -> :ok
+        {:error, e} -> {:error, e}
+      end
+    catch
+      _, e ->
+        {:error, e}
     end
   end
 
@@ -24,7 +45,7 @@ defmodule HttpcBench.Client.Mojito do
     pool_opts = [
       size: pool_size,
       max_overflow: 0,
-      pools: pool_count,
+      pools: pool_count
     ]
 
     Application.put_env(:mojito, :pool_opts, pool_opts)

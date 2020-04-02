@@ -9,6 +9,17 @@ defmodule HttpcBench.Client.Buoy do
     end
   end
 
+  def post do
+    case :buoy.post(Config.buoy_url(), %{
+           headers: Config.post_headers(),
+           body: Config.post_body(),
+           timeout: Config.timeout()
+         }) do
+      {:ok, _} -> :ok
+      error -> error
+    end
+  end
+
   def start(pool_size, pool_count) do
     cond do
       pool_size == 1 ->

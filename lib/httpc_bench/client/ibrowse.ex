@@ -19,6 +19,13 @@ defmodule HttpcBench.Client.Ibrowse do
     end
   end
 
+  def post do
+    case :ibrowse.send_req(url(), headers(), :post, Config.post_body()) do
+      {:ok, _, _, _} -> :ok
+      other -> other
+    end
+  end
+
   def start(pool_size, pool_count) do
     cond do
       pool_size == 1 ->
@@ -32,10 +39,10 @@ defmodule HttpcBench.Client.Ibrowse do
 
         options = [
           max_sessions: pool_size,
-          max_pipeline_size: Config.pipelining(),
+          max_pipeline_size: Config.pipelining()
         ]
 
-        Config.hostname()
+        Config.host()
         |> String.to_charlist()
         |> :ibrowse.set_dest(Config.port(), options)
 

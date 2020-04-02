@@ -1,29 +1,32 @@
 use Mix.Config
 
-config :logger, level: :error
+config :logger, level: :warn
 
 config :httpc_bench,
-  output: :text, # one of: [:text, :html, :csv]
+  # one of: [:text, :html, :csv]
+  output: :csv,
   iterations: 500_000,
-  concurrencies: [16384, 8192, 4096, 2048, 1024, 512, 256],
-  pool_sizes: [512, 256, 128, 64, 32, 1],
-  pool_counts: [32, 16, 8, 4, 1],
+  concurrencies: [4096, 3064, 2048, 1024],
+  pool_sizes: [256, 192, 128, 96, 64, 32],
+  pool_counts: [32, 16, 8, 4],
   clients: [
-    HttpcBench.Client.Mojito,
     HttpcBench.Client.MachineGun,
     HttpcBench.Client.Buoy,
-    HttpcBench.Client.Dlhttpc,
-    HttpcBench.Client.Hackney,
-    HttpcBench.Client.Httpc,
-    HttpcBench.Client.Ibrowse,
-    HttpcBench.Client.Mint,
+    HttpcBench.Client.Mojito,
+    HttpcBench.Client.Finch,
+    HttpcBench.Client.Hackney
+    # HttpcBench.Client.Dlhttpc,
+    # HttpcBench.Client.Httpc,
+    # HttpcBench.Client.Ibrowse
+    # HttpcBench.Client.Mint,
   ],
-  url: System.get_env("URL") || "http://127.0.0.1:8080/wait/10",
-  hostname: System.get_env("HOSTNAME") || "127.0.0.1",
-  port: (System.get_env("PORT") || "8080") |> String.to_integer(),
-  path: "/wait/10",
+  host: System.get_env("SERVER_HOST") || "localhost",
+  port: (System.get_env("SERVER_PORT") || "8080") |> String.to_integer(),
+  path: System.get_env("SERVER_PATH") || "/wait/10",
+  # "get" or "post"
+  test_function: :get,
   pipelining: 1024,
-  timeout: 1000,
+  timeout: 1_000,
   headers: [{"connection", "keep-alive"}]
 
 import_config "#{Mix.env()}*.exs"

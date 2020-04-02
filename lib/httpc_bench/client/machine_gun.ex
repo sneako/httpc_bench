@@ -9,6 +9,13 @@ defmodule HttpcBench.Client.MachineGun do
     end
   end
 
+  def post do
+    case MachineGun.post(Config.url(), Config.post_body(), Config.post_headers()) do
+      {:ok, _} -> :ok
+      error -> error
+    end
+  end
+
   def start(pool_size, pool_count) do
     cond do
       pool_size == 1 ->
@@ -21,7 +28,7 @@ defmodule HttpcBench.Client.MachineGun do
         Application.put_env(:machine_gun, :default, %{
           pool_size: pool_size,
           pool_max_overflow: 0,
-          request_timeout: Config.timeout(),
+          request_timeout: Config.timeout()
         })
 
         {:ok, _} = :application.ensure_all_started(:machine_gun)

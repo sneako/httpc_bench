@@ -10,6 +10,7 @@ defmodule HttpcBench do
   end
 
   def run_clients(opts \\ []) do
+    IO.inspect(Application.get_all_env(:httpc_bench), label: :config)
     print_header(opts)
     print_results(opts)
     print_footer(opts)
@@ -22,14 +23,13 @@ defmodule HttpcBench do
         client <- Config.clients() do
       result(client, concurrency, pool_size, pool_count)
       |> print_result(opts)
-
-      Process.sleep(100)
     end
   end
 
   defp result(client, concurrency, pool_size, pool_count) do
     client_name = client |> to_string |> String.replace_leading("Elixir.HttpcBench.Client.", "")
     name = name(client_name, concurrency, pool_size, pool_count)
+    test_function = Application.get_env(:httpc_bench, :test_function)
 
     case client.start(pool_size, pool_count) do
       {:error, err} ->
@@ -42,11 +42,13 @@ defmodule HttpcBench do
           results: [],
           qps: 0,
           errors: 0,
-          message: err,
+          message: err
         }
 
       :ok ->
-        fun = fn -> client.get() end
+        fun = fn ->
+          apply(client, test_function, [])
+        end
 
         results =
           :timing_hdr.run(
@@ -71,6 +73,7 @@ defmodule HttpcBench do
           results: results,
           qps: qps,
           errors: errors,
+          total_processes: pool_count * pool_size
         }
     end
   end
@@ -89,11 +92,11 @@ defmodule HttpcBench do
         <thead><tr><th>Client</th><th>Pool Count</th><th>Pool Size</th><th>Concurrency</th><th>Req/sec</th><th>Error %</th></tr></thead>
         <tfoot><tr><th>Client</th><th>Pool Count</th><th>Pool Size</th><th>Concurrency</th><th>Req/sec</th><th>Error %</th></tr></tfoot>
         """
-        |> String.trim
+        |> String.trim()
         |> IO.puts()
 
       :csv ->
-        "Client,Pool Count,Pool Size,Concurrency,Req/sec,Error %"
+        "Client,Pool Count,Pool Size,Concurrency,Req/sec,Error %, Total Processes"
         |> IO.puts()
     end
   end
@@ -109,6 +112,7 @@ defmodule HttpcBench do
       result.concurrency,
       trunc(result.qps),
       round(result.errors * 10) / 10.0,
+      result.total_processes
     ]
 
     case output_format(opts) do

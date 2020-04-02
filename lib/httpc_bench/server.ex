@@ -6,16 +6,23 @@ defmodule HttpcBench.Server do
       Plug.Adapters.Cowboy.child_spec(
         scheme: :http,
         plug: HttpcBench.Server.PlugRouter,
-        options: [port: HttpcBench.Config.port()]
-      ),
+        # options: [port: HttpcBench.Config.port()]
+        options: [port: HttpcBench.Config.port(), protocol_options: [max_keepalive: :infinity]]
+        # options: [port: HttpcBench.Config.port(), protocol_options: [max_keepalive: 1]]
+      )
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one, name: __MODULE__)
+  end
+
+  def stop do
+    Supervisor.stop(__MODULE__)
   end
 end
 
 defmodule HttpcBench.Server.PlugRouter do
   use Plug.Router
+  alias HttpcBench.Config
 
   plug(:match)
 
@@ -30,5 +37,14 @@ defmodule HttpcBench.Server.PlugRouter do
     delay = conn.params["delay"] |> String.to_integer()
     Process.sleep(delay)
     send_resp(conn, 200, "ok")
+  end
+
+  post "/wait/:delay" do
+    delay = String.to_integer(delay)
+    Process.sleep(delay)
+
+    conn
+    |> put_resp_header("content-type", "application/json")
+    |> send_resp(200, Config.bid_response())
   end
 end
