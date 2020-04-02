@@ -9,6 +9,13 @@ defmodule HttpcBench.Client.MachineGun do
     end
   end
 
+  def post do
+    case MachineGun.post(Config.url(), Config.post_body(), Config.post_headers()) do
+      {:ok, _} -> :ok
+      error -> error
+    end
+  end
+
   def start(pool_size, pool_count) do
     cond do
       pool_size == 1 ->

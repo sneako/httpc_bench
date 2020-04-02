@@ -7,7 +7,7 @@ defmodule HttpcBench.Server do
         scheme: :http,
         plug: HttpcBench.Server.PlugRouter,
         options: [port: HttpcBench.Config.port()]
-      ),
+      )
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)
@@ -16,6 +16,7 @@ end
 
 defmodule HttpcBench.Server.PlugRouter do
   use Plug.Router
+  alias HttpcBench.Config
 
   plug(:match)
 
@@ -30,5 +31,18 @@ defmodule HttpcBench.Server.PlugRouter do
     delay = conn.params["delay"] |> String.to_integer()
     Process.sleep(delay)
     send_resp(conn, 200, "ok")
+  end
+
+  post "/wait/:delay" do
+    delay = String.to_integer(delay)
+    Process.sleep(delay)
+
+    if :rand.uniform() > 0.1 do
+      conn
+      |> put_resp_header("content-type", "application/json")
+      |> send_resp(200, Config.bid_response())
+    else
+      send_resp(conn, 204, "")
+    end
   end
 end

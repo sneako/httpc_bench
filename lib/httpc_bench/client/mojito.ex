@@ -10,7 +10,22 @@ defmodule HttpcBench.Client.Mojito do
       opts: [timeout: Config.timeout()],
     }
 
-    case Mojito.Pool.request(request) do
+    case Mojito.request(request) do
+      {:ok, _} -> :ok
+      {:error, e} -> {:error, e}
+    end
+  end
+
+  def post do
+    request = %Mojito.Request{
+      method: :post,
+      url: Config.url(),
+      headers: Config.post_headers(),
+      body: Config.post_body(),
+      opts: [timeout: Config.timeout()],
+    }
+
+    case Mojito.request(request) do
       {:ok, _} -> :ok
       {:error, e} -> {:error, e}
     end

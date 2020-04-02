@@ -46,7 +46,8 @@ defmodule HttpcBench do
         }
 
       :ok ->
-        fun = fn -> client.get() end
+        client.post()
+        fun = fn -> client.post() end
 
         results =
           :timing_hdr.run(
