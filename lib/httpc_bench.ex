@@ -42,11 +42,12 @@ defmodule HttpcBench do
           results: [],
           qps: 0,
           errors: 0,
-          message: err,
+          message: err
         }
 
       :ok ->
-        fun = fn -> client.post() end
+        test_function = Application.get_env(:httpc_bench, :test_function)
+        fun = fn -> apply(client, test_function, []) end
 
         results =
           :timing_hdr.run(
@@ -70,7 +71,7 @@ defmodule HttpcBench do
           pool_count: pool_count,
           results: results,
           qps: qps,
-          errors: errors,
+          errors: errors
         }
     end
   end
@@ -89,7 +90,7 @@ defmodule HttpcBench do
         <thead><tr><th>Client</th><th>Pool Count</th><th>Pool Size</th><th>Concurrency</th><th>Req/sec</th><th>Error %</th></tr></thead>
         <tfoot><tr><th>Client</th><th>Pool Count</th><th>Pool Size</th><th>Concurrency</th><th>Req/sec</th><th>Error %</th></tr></tfoot>
         """
-        |> String.trim
+        |> String.trim()
         |> IO.puts()
 
       :csv ->
@@ -108,7 +109,7 @@ defmodule HttpcBench do
       result.pool_size,
       result.concurrency,
       trunc(result.qps),
-      round(result.errors * 10) / 10.0,
+      round(result.errors * 10) / 10.0
     ]
 
     case output_format(opts) do

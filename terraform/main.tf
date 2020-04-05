@@ -49,7 +49,6 @@ resource "aws_instance" "client" {
     erlang_version = var.erlang_version
     elixir_version = var.elixir_version
     server_host = aws_instance.server.public_ip
-    after_setup = ""
   })
 
   tags = {
@@ -68,7 +67,6 @@ resource "aws_instance" "server" {
     erlang_version = var.erlang_version
     elixir_version = var.elixir_version
     server_host = ""
-    after_setup = "iex -S mix"
   })
 
   tags = {

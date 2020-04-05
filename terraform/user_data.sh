@@ -5,6 +5,8 @@ echo "* soft nofile 102400" >> /etc/security/limits.conf
 sysctl -w fs.file-max=102400
 sysctl -p
 
+export MIX_ENV=prod
+
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 export LC_ALL=en_US.UTF-8
@@ -28,15 +30,21 @@ wget --no-verbose -P /tmp/ "https://repo.hex.pm/builds/elixir/v${elixir_version}
 unzip "/tmp/v${elixir_version}.zip" -d /usr/local
 rm "/tmp/v${elixir_version}.zip"
 
-export HOME=/home/ec2-user
 export SERVER_HOST=${server_host}
-cd /home/ec2-user
+export SERVER_PATH=${server_path}
+export TEST_FUNCTION=${test_function}
+
+echo SERVER_HOST=${server_host} >> /etc/profile.d/script.sh
+echo SERVER_PATH=${server_path} >> /etc/profile.d/script.sh
+echo TEST_FUNCTION=${test_function} >> /etc/profile.d/script.sh
+
+export HOME=/home/ec2-user
+cd $HOME
 git clone --single-branch --branch finch https://github.com/sneako/httpc_bench.git
 cd httpc_bench
 mix local.hex --force
 mix local.rebar --force
 mix deps.get
 mix compile
-chown -R ec2-user:ec2-user /home/ec2-user
+chown -R ec2-user:ec2-user $HOME
 
-${after_setup}
