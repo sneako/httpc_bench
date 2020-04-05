@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+echo "* hard nofile 102400" >> /etc/security/limits.conf
+echo "* soft nofile 102400" >> /etc/security/limits.conf
+sysctl -w fs.file-max=102400
+sysctl -p
+
 ERL_VERSION="22.2.8"
 ELIXIR_VERSION="1.10.2-otp-22"
 

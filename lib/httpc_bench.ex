@@ -46,7 +46,6 @@ defmodule HttpcBench do
         }
 
       :ok ->
-        client.post()
         fun = fn -> client.post() end
 
         results =
