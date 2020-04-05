@@ -24,10 +24,10 @@ resource "aws_security_group" "default" {
   }
 
   ingress {
-    from_port = 8080
-    to_port   = 8080
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
   }
 
   egress {
@@ -48,7 +48,7 @@ resource "aws_instance" "client" {
   user_data = templatefile("${path.module}/user_data.sh", {
     erlang_version = var.erlang_version
     elixir_version = var.elixir_version
-    server_host = aws_instance.server.public_ip
+    server_host = aws_instance.server.private_ip
     server_path = var.request_path
     test_function = var.request_method
   })
