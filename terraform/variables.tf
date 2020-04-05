@@ -13,3 +13,12 @@ variable "ssh_key_name" {
   type        = string
 }
 
+variable "erlang_version" {
+  type    = string
+  default = "22.2.8"
+}
+
+variable "elixir_version" {
+  type    = string
+  default = "1.10.2-otp-22"
+}

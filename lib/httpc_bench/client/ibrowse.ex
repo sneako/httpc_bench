@@ -42,7 +42,7 @@ defmodule HttpcBench.Client.Ibrowse do
           max_pipeline_size: Config.pipelining(),
         ]
 
-        Config.hostname()
+        Config.host()
         |> String.to_charlist()
         |> :ibrowse.set_dest(Config.port(), options)
 

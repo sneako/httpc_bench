@@ -39,25 +39,13 @@ defmodule HttpcBench.Config do
     @clients
   end
 
-  @url Application.get_env(:httpc_bench, :url)
-
-  def url do
-    @url
-  end
-
-  @hostname Application.get_env(:httpc_bench, :hostname)
-
-  def hostname do
-    @hostname
-  end
-
   @port Application.get_env(:httpc_bench, :port)
 
   def port do
     @port
   end
 
-  @host "#{@hostname}:#{@port}"
+  @host Application.get_env(:httpc_bench, :host)
 
   def host do
     @host
@@ -69,7 +57,11 @@ defmodule HttpcBench.Config do
     @path
   end
 
-  @buoy_url {:buoy_url, @host, @hostname, @path, @port, :http}
+  def url do
+    "http://#{@host}:#{@port}/#{@path}"
+  end
+
+  @buoy_url {:buoy_url, "#{@host}:#{@port}", @host, @path, @port, :http}
 
   def buoy_url do
     @buoy_url

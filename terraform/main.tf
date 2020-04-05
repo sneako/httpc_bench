@@ -45,7 +45,12 @@ resource "aws_instance" "client" {
   vpc_security_group_ids = [aws_security_group.default.id]
   key_name               = var.ssh_key_name
 
-  user_data = file("${path.module}/user_data.sh")
+  user_data = templatefile("${path.module}/user_data.sh", {
+    erlang_version = var.erlang_version
+    elixir_version = var.elixir_version
+    server_host = aws_instance.server.public_ip
+    after_setup = ""
+  })
 
   tags = {
     Name = "httpc_bench_client"
@@ -59,7 +64,12 @@ resource "aws_instance" "server" {
   vpc_security_group_ids = [aws_security_group.default.id]
   key_name               = var.ssh_key_name
 
-  user_data = file("${path.module}/user_data.sh")
+  user_data = templatefile("${path.module}/user_data.sh", {
+    erlang_version = var.erlang_version
+    elixir_version = var.elixir_version
+    server_host = ""
+    after_setup = "iex -S mix"
+  })
 
   tags = {
     Name = "httpc_bench_server"
