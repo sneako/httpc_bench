@@ -2,6 +2,8 @@ defmodule Mix.Tasks.RunClients do
   use Mix.Task
 
   def run(argv) do
+    Application.ensure_all_started(:nimble_pool)
+
     argv
     |> argv_to_opts
     |> HttpcBench.run_clients()
