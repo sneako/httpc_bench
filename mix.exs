@@ -29,6 +29,7 @@ defmodule HttpcBench.MixProject do
       {:finch, github: "sneako/finch", branch: "multi-pool"},
       {:mojito, git: "https://github.com/appcues/mojito.git"},
       {:timing, git: "https://github.com/lpgauth/timing.git"},
+      {:hdr_histogram, github: "HdrHistogram/hdr_histogram_erl", override: true},
       {:metal, "0.1.1", override: true},
       {:cowboy, "~> 2.0"},
       {:plug_cowboy, "~> 2.0"},
