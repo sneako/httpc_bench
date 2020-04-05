@@ -37,3 +37,11 @@ mix compile
 CFLAGS='-stc=c11' mix compile
 mix compile
 ```
+## Terraform
+Copy `terraform/my-vars.tfvars.example` to `terraform/my-vars.tfvars` and populate the variables.
+
+```bash
+cd terraform
+terraform init
+terraform apply --var-file=my-vars.tfvars
+```
