@@ -1,0 +1,4 @@
+aws_region = "us-east-1"
+instance_type = "c5.4xlarge"
+ssh_key_name = ""
+
