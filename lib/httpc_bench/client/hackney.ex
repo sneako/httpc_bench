@@ -12,7 +12,9 @@ defmodule HttpcBench.Client.Hackney do
 
   def post do
     with {:ok, _, _, ref} <-
-           :hackney.request(:post, Config.url(), Config.headers(), Config.post_body(), pool: :httpc_bench_hackney),
+           :hackney.request(:post, Config.url(), Config.headers(), Config.post_body(),
+             pool: :httpc_bench_hackney
+           ),
          {:ok, _} <- :hackney.body(ref) do
       :ok
     end

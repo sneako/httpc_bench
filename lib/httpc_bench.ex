@@ -30,6 +30,7 @@ defmodule HttpcBench do
   defp result(client, concurrency, pool_size, pool_count) do
     client_name = client |> to_string |> String.replace_leading("Elixir.HttpcBench.Client.", "")
     name = name(client_name, concurrency, pool_size, pool_count)
+    test_function = Application.get_env(:httpc_bench, :test_function)
 
     case client.start(pool_size, pool_count) do
       {:error, err} ->
@@ -46,7 +47,6 @@ defmodule HttpcBench do
         }
 
       :ok ->
-        test_function = Application.get_env(:httpc_bench, :test_function)
         fun = fn -> apply(client, test_function, []) end
 
         results =

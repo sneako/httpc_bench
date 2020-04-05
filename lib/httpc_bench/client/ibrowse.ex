@@ -39,7 +39,7 @@ defmodule HttpcBench.Client.Ibrowse do
 
         options = [
           max_sessions: pool_size,
-          max_pipeline_size: Config.pipelining(),
+          max_pipeline_size: Config.pipelining()
         ]
 
         Config.host()

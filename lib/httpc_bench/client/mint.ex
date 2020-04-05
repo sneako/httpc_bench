@@ -5,7 +5,7 @@ defmodule HttpcBench.Client.Mint do
   def get do
     req = %Mojito.Request{
       method: :get,
-      url: Config.url(),
+      url: Config.url()
     }
 
     case Mojito.Request.Single.request(req) do

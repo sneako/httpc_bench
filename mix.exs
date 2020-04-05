@@ -7,14 +7,14 @@ defmodule HttpcBench.MixProject do
       version: "0.1.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
+      deps: deps()
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger]
     ]
   end
 
@@ -33,7 +33,7 @@ defmodule HttpcBench.MixProject do
       {:metal, "0.1.1", override: true},
       {:cowboy, "~> 2.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:freedom_formatter, "~> 1.0"},
+      {:freedom_formatter, "~> 1.0"}
     ]
   end
 end

@@ -16,4 +16,3 @@ defmodule Mix.Tasks.RunClients do
     end
   end
 end
-

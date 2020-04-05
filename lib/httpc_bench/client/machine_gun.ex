@@ -28,7 +28,7 @@ defmodule HttpcBench.Client.MachineGun do
         Application.put_env(:machine_gun, :default, %{
           pool_size: pool_size,
           pool_max_overflow: 0,
-          request_timeout: Config.timeout(),
+          request_timeout: Config.timeout()
         })
 
         {:ok, _} = :application.ensure_all_started(:machine_gun)

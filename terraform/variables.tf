@@ -22,3 +22,12 @@ variable "elixir_version" {
   type    = string
   default = "1.10.2-otp-22"
 }
+
+variable "request_path" {
+  default = "/wait/10"
+}
+
+variable "request_method" {
+  description = "HTTP method to test, currently only GET & POST are supported"
+  default = "get"
+}
