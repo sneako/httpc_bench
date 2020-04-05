@@ -37,12 +37,12 @@ defmodule HttpcBench.Server.PlugRouter do
     delay = String.to_integer(delay)
     Process.sleep(delay)
 
-    if :rand.uniform() > 0.1 do
+    # if :rand.uniform() > 0.1 do
       conn
       |> put_resp_header("content-type", "application/json")
       |> send_resp(200, Config.bid_response())
-    else
-      send_resp(conn, 204, "")
-    end
+    # else
+    #   send_resp(conn, 204, "")
+    # end
   end
 end
