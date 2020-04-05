@@ -31,8 +31,10 @@ defmodule HttpcBench.Client.Finch do
   end
 
   def start(pool_size, pool_count) do
+    shp = shp(Config.url())
+
     {:ok, _pid} =
-      Finch.start_link(name: MyFinch, pools: %{default: %{size: pool_size, count: pool_count}})
+      Finch.start_link(name: MyFinch, pools: %{shp => %{size: pool_size, count: pool_count}})
 
     :ok
   end
@@ -41,5 +43,11 @@ defmodule HttpcBench.Client.Finch do
     Supervisor.stop(MyFinch.Supervisor)
 
     :ok
+  end
+
+  def shp(url) do
+    uri = URI.parse(url)
+
+    {String.to_atom(uri.scheme), uri.host, uri.port}
   end
 end
