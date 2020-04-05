@@ -2,7 +2,7 @@ defmodule Mix.Tasks.RunClients do
   use Mix.Task
 
   def run(argv) do
-    Application.ensure_all_started(:nimble_pool)
+    Mix.Task.run("app.start")
 
     argv
     |> argv_to_opts
