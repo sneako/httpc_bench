@@ -10,6 +10,7 @@ defmodule HttpcBench do
   end
 
   def run_clients(opts \\ []) do
+    IO.inspect(Application.get_all_env(:httpc_bench), label: :config)
     print_header(opts)
     print_results(opts)
     print_footer(opts)

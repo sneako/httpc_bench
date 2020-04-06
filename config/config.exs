@@ -4,7 +4,7 @@ config :logger, level: :error
 
 config :httpc_bench,
   # one of: [:text, :html, :csv]
-  output: :text,
+  output: :csv,
   iterations: 500_000,
   concurrencies: [16384, 8192, 4096, 2048, 1024, 512, 256],
   pool_sizes: [512, 256, 128, 64, 32, 1],
@@ -12,7 +12,7 @@ config :httpc_bench,
   clients: [
     HttpcBench.Client.Mojito,
     HttpcBench.Client.MachineGun,
-    # HttpcBench.Client.Buoy,
+    HttpcBench.Client.Buoy,
     HttpcBench.Client.Finch,
     # HttpcBench.Client.Dlhttpc,
     HttpcBench.Client.Hackney,
