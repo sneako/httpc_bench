@@ -3,6 +3,7 @@
 echo "* hard nofile 102400" >> /etc/security/limits.conf
 echo "* soft nofile 102400" >> /etc/security/limits.conf
 sysctl -w fs.file-max=102400
+sysctl -w net.ipv4.ip_local_port_range="1024 65535"
 sysctl -p
 
 export MIX_ENV=prod
