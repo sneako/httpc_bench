@@ -2,7 +2,13 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "instance_type" {
+variable "client_instance_type" {
+  description = "AWS EC2 instance type"
+  type        = string
+  default     = "c5.4xlarge"
+}
+
+variable "server_instance_type" {
   description = "AWS EC2 instance type"
   type        = string
   default     = "c5.4xlarge"

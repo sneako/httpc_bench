@@ -41,7 +41,7 @@ resource "aws_security_group" "default" {
 
 resource "aws_instance" "client" {
   ami                    = data.aws_ami.amazon-linux-2.id
-  instance_type          = var.instance_type
+  instance_type          = var.client_instance_type
   vpc_security_group_ids = [aws_security_group.default.id]
   key_name               = var.ssh_key_name
 
@@ -58,10 +58,9 @@ resource "aws_instance" "client" {
   }
 }
 
-
 resource "aws_instance" "server" {
   ami                    = data.aws_ami.amazon-linux-2.id
-  instance_type          = var.instance_type
+  instance_type          = var.server_instance_type
   vpc_security_group_ids = [aws_security_group.default.id]
   key_name               = var.ssh_key_name
 
