@@ -64,8 +64,6 @@ defmodule HttpcBench do
 
         client.stop()
 
-        Process.sleep(5_000)
-
         %{
           client: client_name,
           name: name,
