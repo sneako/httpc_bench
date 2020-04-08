@@ -50,7 +50,7 @@ resource "aws_instance" "client" {
     elixir_version = var.elixir_version
     server_host = aws_instance.server.private_ip
     server_path = var.request_path
-    test_function = var.request_method
+    test_function = var.test_function
   })
 
   tags = {
