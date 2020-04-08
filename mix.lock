@@ -8,7 +8,7 @@
   "dispcount": {:git, "https://github.com/ferd/dispcount.git", "192139f5c1bbd32245f3986d4b1bfd1e7c1ddf9f", [ref: "1.0.2"]},
   "dlhttpc": {:git, "https://github.com/ferd/dlhttpc.git", "10726522af5a5df2ada91bb7c08fcfcc62fb7a4d", []},
   "edown": {:git, "https://github.com/uwiger/edown.git", "754be25f71a04099c83f3ffdff268e70beeb0021", [branch: "master"]},
-  "finch": {:git, "https://github.com/sneako/finch.git", "83a7e2570c2daf7acc8361c8df9cceca30ffd161", [branch: "connection-close"]},
+  "finch": {:git, "https://github.com/keathley/finch.git", "6bde388f8ca19e62420da5b7b6ac7e50749a6cfd", []},
   "foil": {:git, "https://github.com/lpgauth/foil.git", "b55c30ff8b21daf89a85d1565d4b836c7f9e549b", [tag: "0.1.2"]},
   "fqc": {:git, "https://github.com/project-fifo/fqc.git", "883013e96408f98b29d016fa094b8ac7410c364e", [branch: "master"]},
   "freedom_formatter": {:hex, :freedom_formatter, "1.0.0", "b19be4a845082d05d32bb23765e8e7bdc6d51decac13ab64ae44b0f6bf8a66d1", [:mix], [], "hexpm", "a002337e51c23d14ec10a17272d0dbca0cf03f247e4032ab202530a4f378708f"},

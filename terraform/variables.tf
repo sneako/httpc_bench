@@ -33,7 +33,7 @@ variable "request_path" {
   default = "/wait/10"
 }
 
-variable "request_method" {
+variable "test_function" {
   description = "HTTP method to test, currently only GET & POST are supported"
   default = "get"
 }
