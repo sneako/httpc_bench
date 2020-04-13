@@ -26,7 +26,7 @@ config :httpc_bench,
   # "get" or "post"
   test_function: System.get_env("TEST_FUNCTION", "post") |> String.downcase() |> String.to_atom(),
   pipelining: 1024,
-  timeout: 15_000,
+  timeout: 500,
   headers: [{"connection", "keep-alive"}]
 
 import_config "#{Mix.env()}*.exs"
