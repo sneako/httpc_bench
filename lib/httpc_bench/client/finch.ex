@@ -43,7 +43,10 @@ defmodule HttpcBench.Client.Finch do
     shp = shp(Config.url())
 
     {:ok, _pid} =
-      Finch.start_link(name: MyFinch, pools: %{shp => [size: pool_size, count: pool_count]})
+      Finch.start_link(
+        name: MyFinch,
+        pools: %{shp => [size: pool_size, count: pool_count, min_ready: pool_size]}
+      )
 
     :ok
   end

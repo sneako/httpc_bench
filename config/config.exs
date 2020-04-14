@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :logger, level: :error
+config :logger, level: :warn
 
 config :httpc_bench,
   # one of: [:text, :html, :csv]
