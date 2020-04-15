@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :httpc_bench,
-  iterations: 10_000,
+  iterations: 10_001,
   concurrencies: [256, 512],
   pool_sizes: [20, 50, 100],
   pool_counts: [1, 4, 8, 16]

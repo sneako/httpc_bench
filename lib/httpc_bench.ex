@@ -23,8 +23,6 @@ defmodule HttpcBench do
         client <- Config.clients() do
       result(client, concurrency, pool_size, pool_count)
       |> print_result(opts)
-
-      Process.sleep(100)
     end
   end
 
@@ -32,9 +30,26 @@ defmodule HttpcBench do
     client_name = client |> to_string |> String.replace_leading("Elixir.HttpcBench.Client.", "")
     name = name(client_name, concurrency, pool_size, pool_count)
     test_function = Application.get_env(:httpc_bench, :test_function)
+    counter = :counters.new(100, [:write_concurrency])
+    telemetry_handler = fn e, _, _, _ -> count_finch_event(counter, e) end
+
+    :telemetry.attach_many(
+      "httpc_bench",
+      [
+        [:finch, :reused_connection],
+        [:finch, :reconnect],
+        [:finch, :connect, :start],
+        [:finch, :queue, :start],
+        [:finch, :failed_checkout]
+      ],
+      telemetry_handler,
+      nil
+    )
 
     case client.start(pool_size, pool_count) do
       {:error, err} ->
+        :telemetry.detach("httpc_bench")
+
         %{
           client: client_name,
           name: name,
@@ -62,6 +77,8 @@ defmodule HttpcBench do
         qps = results[:success] / (results[:total_time] / 1_000_000)
         errors = results[:errors] * 100 / results[:iterations]
 
+        Process.sleep(1_000)
+        :telemetry.detach("httpc_bench")
         client.stop()
 
         %{
@@ -72,10 +89,32 @@ defmodule HttpcBench do
           pool_count: pool_count,
           results: results,
           qps: qps,
-          errors: errors
+          errors: errors,
+          total_processes: pool_count * pool_size,
+          queue_start: get_finch_event_count(counter, [:finch, :queue, :start]),
+          reused_connection: get_finch_event_count(counter, [:finch, :reused_connection]),
+          reconnections: get_finch_event_count(counter, [:finch, :reconnect]),
+          failed_checkouts: get_finch_event_count(counter, [:finch, :failed_checkout]),
+          connect_start: get_finch_event_count(counter, [:finch, :connect, :start])
         }
     end
   end
+
+  defp count_finch_event(counter, event) do
+    i = finch_event_id(event)
+    :counters.add(counter, i, 1)
+  end
+
+  defp get_finch_event_count(counter, event) do
+    i = finch_event_id(event)
+    :counters.get(counter, i)
+  end
+
+  defp finch_event_id([:finch, :reused_connection]), do: 1
+  defp finch_event_id([:finch, :connect, :start]), do: 2
+  defp finch_event_id([:finch, :reconnect]), do: 3
+  defp finch_event_id([:finch, :failed_checkout]), do: 4
+  defp finch_event_id([:finch, :queue, :start]), do: 5
 
   defp print_header(opts) do
     case output_format(opts) do
@@ -95,7 +134,7 @@ defmodule HttpcBench do
         |> IO.puts()
 
       :csv ->
-        "Client,Pool Count,Pool Size,Concurrency,Req/sec,Error %"
+        "Client,Pool Count,Pool Size,Concurrency,Req/sec,Error %, Total Processes, Queue Start, Connect Start, Reused Connections, Reconnections, Failed Connections"
         |> IO.puts()
     end
   end
@@ -110,7 +149,13 @@ defmodule HttpcBench do
       result.pool_size,
       result.concurrency,
       trunc(result.qps),
-      round(result.errors * 10) / 10.0
+      round(result.errors * 10) / 10.0,
+      result.total_processes,
+      result.queue_start,
+      result.connect_start,
+      result.reused_connection,
+      result.reconnections,
+      result.failed_checkouts
     ]
 
     case output_format(opts) do

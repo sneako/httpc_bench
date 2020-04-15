@@ -6,7 +6,7 @@ config :httpc_bench,
   # one of: [:text, :html, :csv]
   output: :csv,
   iterations: 500_000,
-  concurrencies: [8192, 7000 6000, 5000, 4096, 2048, 1024],
+  concurrencies: [4096, 3000, 2048, 1024],
   pool_sizes: [256, 192, 128, 96, 64, 32, 24, 16],
   pool_counts: [64, 32, 16, 8],
   clients: [
