@@ -13,7 +13,7 @@ config :httpc_bench,
     # HttpcBench.Client.Mojito,
     # HttpcBench.Client.MachineGun,
     # HttpcBench.Client.Buoy,
-    HttpcBench.Client.Finch,
+    HttpcBench.Client.Finch
     # HttpcBench.Client.Dlhttpc,
     # HttpcBench.Client.Hackney,
     # HttpcBench.Client.Httpc,

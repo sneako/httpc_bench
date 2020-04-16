@@ -30,7 +30,7 @@ defmodule HttpcBench do
     client_name = client |> to_string |> String.replace_leading("Elixir.HttpcBench.Client.", "")
     name = name(client_name, concurrency, pool_size, pool_count)
     test_function = Application.get_env(:httpc_bench, :test_function)
-    counter = :counters.new(100, [:write_concurrency])
+    counter = :counters.new(100, [:atomics])
     telemetry_handler = fn e, _, _, _ -> count_finch_event(counter, e) end
 
     :telemetry.attach_many(
@@ -63,7 +63,10 @@ defmodule HttpcBench do
         }
 
       :ok ->
-        fun = fn -> apply(client, test_function, []) end
+        fun = fn ->
+          :counters.add(counter, 100, 1)
+          apply(client, test_function, [])
+        end
 
         results =
           :timing_hdr.run(
@@ -87,6 +90,7 @@ defmodule HttpcBench do
           concurrency: concurrency,
           pool_size: pool_size,
           pool_count: pool_count,
+          recorded_iterations: :counters.get(counter, 100),
           results: results,
           qps: qps,
           errors: errors,
@@ -134,7 +138,7 @@ defmodule HttpcBench do
         |> IO.puts()
 
       :csv ->
-        "Client,Pool Count,Pool Size,Concurrency,Req/sec,Error %, Total Processes, Queue Start, Connect Start, Reused Connections, Reconnections, Failed Connections"
+        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Queue Start, Connect Start, Reused Connections, Reconnections, Failed Connections"
         |> IO.puts()
     end
   end
@@ -148,6 +152,7 @@ defmodule HttpcBench do
       result.pool_count,
       result.pool_size,
       result.concurrency,
+      result.recorded_iterations,
       trunc(result.qps),
       round(result.errors * 10) / 10.0,
       result.total_processes,
