@@ -32,9 +32,14 @@ defmodule HttpcBench.Client.Finch do
                pool_timeout: 50
              ) do
         :ok
+      else
+        error ->
+          # IO.inspect(error)
+          error
       end
     catch
       _, _ ->
+        # IO.inspect(a, label: :caught)
         {:error, :pool_timeout}
     end
   end

@@ -24,7 +24,7 @@ config :httpc_bench,
   port: (System.get_env("SERVER_PORT") || "8080") |> String.to_integer(),
   path: System.get_env("SERVER_PATH") || "/wait/10",
   # "get" or "post"
-  test_function: System.get_env("TEST_FUNCTION", "get") |> String.downcase() |> String.to_atom(),
+  test_function: :post, #System.get_env("TEST_FUNCTION", "get") |> String.downcase() |> String.to_atom(),
   pipelining: 1024,
   timeout: 500,
   headers: [{"connection", "keep-alive"}]
