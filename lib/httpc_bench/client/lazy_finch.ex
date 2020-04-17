@@ -14,9 +14,14 @@ defmodule HttpcBench.Client.LazyFinch do
                pool_timeout: @pool_timeout
              ) do
         :ok
+      else
+        error ->
+          # IO.inspect(error, label: :error)
+          error
       end
     catch
-      _, _ ->
+      _, error ->
+        # IO.inspect(error, label: :exit)
         {:error, :pool_timeout}
     end
   end
@@ -40,8 +45,8 @@ defmodule HttpcBench.Client.LazyFinch do
           error
       end
     catch
-      _, _ ->
-        # IO.inspect(a, label: :caught)
+      _, _error ->
+        # IO.inspect(error, label: :exit)
         {:error, :pool_timeout}
     end
   end
