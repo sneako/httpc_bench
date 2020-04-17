@@ -36,8 +36,9 @@ defmodule HttpcBench do
     :telemetry.attach_many(
       "httpc_bench",
       [
-        [:finch, :connect, :start],
         [:finch, :queue, :start],
+        [:finch, :connect, :start],
+        [:finch, :reused_connection],
         [:finch, :failed_checkout]
       ],
       telemetry_handler,
@@ -94,6 +95,7 @@ defmodule HttpcBench do
           total_processes: pool_count * pool_size,
           queue_start: get_finch_event_count(counter, [:finch, :queue, :start]),
           failed_checkouts: get_finch_event_count(counter, [:finch, :failed_checkout]),
+          reused_connection: get_finch_event_count(counter, [:finch, :reused_connection]),
           connect_start: get_finch_event_count(counter, [:finch, :connect, :start])
         }
     end
@@ -133,7 +135,7 @@ defmodule HttpcBench do
         |> IO.puts()
 
       :csv ->
-        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Queue Start, Connect Start, Failed Checkouts"
+        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Queue Start, Connect Start, Reused Connections, Failed Checkouts"
         |> IO.puts()
     end
   end
@@ -153,6 +155,7 @@ defmodule HttpcBench do
       result.total_processes,
       result.queue_start,
       result.connect_start,
+      result.reused_connection,
       result.failed_checkouts
     ]
 
