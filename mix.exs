@@ -27,14 +27,15 @@ defmodule HttpcBench.MixProject do
       {:ibrowse, "~> 4.4.1"},
       {:machine_gun, "~> 0.1.5"},
       {:finch, github: "keathley/finch", branch: "timeout"},
+      #{:finch, github: "keathley/finch", branch: "timeout-bug"},
+      #{:finch, github: "keathley/finch", branch: "master"},
       #{:finch, path: "../../keathley/finch"},
       {:mojito, git: "https://github.com/appcues/mojito.git"},
       {:timing, git: "https://github.com/lpgauth/timing.git"},
       {:hdr_histogram, github: "HdrHistogram/hdr_histogram_erl", override: true},
       {:metal, "0.1.1", override: true},
       {:cowboy, "~> 2.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:freedom_formatter, "~> 1.0"}
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 end
