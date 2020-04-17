@@ -138,7 +138,7 @@ defmodule HttpcBench do
         |> IO.puts()
 
       :csv ->
-        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Queue Start, Connect Start, Reused Connections, Failed Checkouts"
+        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Connect Start, Queue Start, Reused Connections, Failed Checkouts"
         |> IO.puts()
     end
   end
@@ -156,8 +156,8 @@ defmodule HttpcBench do
       trunc(result.qps),
       round(result.errors * 10) / 10.0,
       result.total_processes,
-      result.queue_start,
       result.connect_start,
+      result.queue_start,
       result.reused_connection,
       result.failed_checkouts
     ]
