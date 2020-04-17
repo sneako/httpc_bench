@@ -27,7 +27,7 @@ defmodule HttpcBench.MixProject do
       {:ibrowse, "~> 4.4.1"},
       {:machine_gun, "~> 0.1.5"},
       {:finch, github: "keathley/finch", branch: "lazy-pool"},
-#      {:finch, github: "keathley/finch", branch: "timeout"},
+      # {:finch, github: "keathley/finch", branch: "timeout"},
       # {:finch, github: "keathley/finch", branch: "timeout-bug"},
       # {:finch, github: "keathley/finch", branch: "master"},
       # {:finch, path: "../../keathley/finch"},

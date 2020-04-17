@@ -7,7 +7,8 @@ defmodule HttpcBench.Server do
         scheme: :http,
         plug: HttpcBench.Server.PlugRouter,
         options: [port: HttpcBench.Config.port()]
-        #, protocol_options: [max_keepalive: :infinity]]
+        # options: [port: HttpcBench.Config.port(), protocol_options: [max_keepalive: :infinity]]
+        # options: [port: HttpcBench.Config.port(), protocol_options: [max_keepalive: 1]]
       )
     ]
 
