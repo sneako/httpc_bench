@@ -31,7 +31,10 @@ defmodule HttpcBench do
     name = name(client_name, concurrency, pool_size, pool_count)
     test_function = Application.get_env(:httpc_bench, :test_function)
     counter = :counters.new(100, [:atomics])
-    telemetry_handler = fn e, _, _, _ -> count_finch_event(counter, e) end
+
+    telemetry_handler = fn e, _, _, _ ->
+      count_finch_event(counter, e)
+    end
 
     :telemetry.attach_many(
       "httpc_bench",
