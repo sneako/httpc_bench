@@ -6,8 +6,8 @@ defmodule HttpcBench.Server do
       Plug.Adapters.Cowboy.child_spec(
         scheme: :http,
         plug: HttpcBench.Server.PlugRouter,
-        # , protocol_options: [max_keepalive: :infinity]]
         options: [port: HttpcBench.Config.port()]
+        # , protocol_options: [max_keepalive: :infinity]]
       )
     ]
 
