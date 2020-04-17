@@ -41,7 +41,7 @@ echo TEST_FUNCTION=${test_function} >> /etc/profile.d/script.sh
 
 export HOME=/home/ec2-user
 cd $HOME
-git clone --single-branch --branch finch https://github.com/sneako/httpc_bench.git
+git clone --single-branch --branch reverttt https://github.com/sneako/httpc_bench.git
 cd httpc_bench
 mix local.hex --force
 mix local.rebar --force
