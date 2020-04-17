@@ -49,15 +49,9 @@ terraform apply --var-file=my-vars.tfvars
 
 After terraform completes the server's public ip addresses will be output for you.
 
-Ssh to the server and run:
-```
-cd httpc_bench
-MIX_ENV=prod iex -S mix
-iex> HttpcBench.run_server()
-```
-(TODO: ^ not ideal, we can get the server to start automatically after the installation is complete)
+The server should be started automatically.
 
-Next ssh to the client and run:
+To start the test, ssh to the client and run:
 ```
 cd httpc_bench
 MIX_ENV=prod mix run_clients

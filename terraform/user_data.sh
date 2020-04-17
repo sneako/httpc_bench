@@ -49,3 +49,4 @@ mix deps.get
 mix compile
 chown -R ec2-user:ec2-user $HOME
 
+${after_install}

@@ -51,6 +51,7 @@ resource "aws_instance" "client" {
     server_host = aws_instance.server.private_ip
     server_path = var.request_path
     test_function = var.test_function
+    after_install = ""
   })
 
   tags = {
@@ -70,6 +71,7 @@ resource "aws_instance" "server" {
     server_host = ""
     server_path = ""
     test_function = ""
+    after_install = "mix run --no-halt run_server.exs"
   })
 
   tags = {
