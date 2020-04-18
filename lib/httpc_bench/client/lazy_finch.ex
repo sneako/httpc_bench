@@ -20,7 +20,7 @@ defmodule HttpcBench.Client.LazyFinch do
           error
       end
     catch
-      _, error ->
+      _, _error ->
         # IO.inspect(error, label: :exit)
         {:error, :pool_timeout}
     end
@@ -57,7 +57,7 @@ defmodule HttpcBench.Client.LazyFinch do
     {:ok, _pid} =
       Finch.start_link(
         name: MyFinch,
-        pools: %{shp => [size: pool_size, count: pool_count, min_ready: pool_size, type: :lazy]}
+        pools: %{shp => [size: pool_size, count: pool_count, type: :lazy]}
       )
 
     :ok
