@@ -42,7 +42,7 @@ defmodule HttpcBench do
         [:finch, :queue, :start],
         [:finch, :connect, :start],
         [:finch, :reused_connection],
-        [:finch, :init_lazy],
+        [:finch, :init_worker],
         [:finch, :failed_checkout]
       ],
       telemetry_handler,
@@ -85,7 +85,6 @@ defmodule HttpcBench do
 
         :telemetry.detach("httpc_bench")
         client.stop()
-        Process.sleep(1_000)
 
         %{
           client: client_name,
@@ -101,7 +100,7 @@ defmodule HttpcBench do
           queue_start: get_finch_event_count(counter, [:finch, :queue, :start]),
           failed_checkouts: get_finch_event_count(counter, [:finch, :failed_checkout]),
           reused_connection: get_finch_event_count(counter, [:finch, :reused_connection]),
-          init_lazy: get_finch_event_count(counter, [:finch, :init_lazy]),
+          init_worker: get_finch_event_count(counter, [:finch, :init_worker]),
           connect_start: get_finch_event_count(counter, [:finch, :connect, :start])
         }
     end
@@ -122,7 +121,7 @@ defmodule HttpcBench do
   defp finch_event_id([:finch, :reconnect]), do: 3
   defp finch_event_id([:finch, :failed_checkout]), do: 4
   defp finch_event_id([:finch, :queue, :start]), do: 5
-  defp finch_event_id([:finch, :init_lazy]), do: 6
+  defp finch_event_id([:finch, :init_worker]), do: 6
 
   defp print_header(opts) do
     case output_format(opts) do
@@ -142,7 +141,7 @@ defmodule HttpcBench do
         |> IO.puts()
 
       :csv ->
-        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Init Lazy, Connect Start, Queue Start, Reused Connections, Failed Checkouts"
+        "Client,Pool Count,Pool Size,Concurrency,Recorded Iterations, Req/sec,Error %, Total Processes, Init Worker, Connect Start, Queue Start, Reused Connections, Failed Checkouts"
         |> IO.puts()
     end
   end
@@ -160,7 +159,7 @@ defmodule HttpcBench do
       trunc(result.qps),
       round(result.errors * 10) / 10.0,
       result.total_processes,
-      result.init_lazy,
+      result.init_worker,
       result.connect_start,
       result.queue_start,
       result.reused_connection,
