@@ -10,10 +10,7 @@ defmodule HttpcBench.Client.Mojito do
       opts: [timeout: Config.timeout()]
     }
 
-    case Mojito.request(request) do
-      {:ok, _} -> :ok
-      {:error, e} -> {:error, e}
-    end
+    request(request)
   end
 
   def post do
@@ -25,9 +22,18 @@ defmodule HttpcBench.Client.Mojito do
       opts: [timeout: Config.timeout()]
     }
 
-    case Mojito.request(request) do
-      {:ok, _} -> :ok
-      {:error, e} -> {:error, e}
+    request(request)
+  end
+
+  defp request(req) do
+    try do
+      case Mojito.request(req) do
+        {:ok, _} -> :ok
+        {:error, e} -> {:error, e}
+      end
+    catch
+      _, e ->
+        {:error, e}
     end
   end
 
