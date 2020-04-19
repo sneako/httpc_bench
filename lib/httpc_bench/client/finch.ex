@@ -4,11 +4,14 @@ defmodule HttpcBench.Client.Finch do
 
   require Logger
 
+  @pool_timeout 150
+
   def get do
     try do
       with {:ok, _} <-
              Finch.request(MyFinch, :get, Config.url(), Config.headers(), nil,
-               timeout: Config.timeout()
+               receive_timeout: Config.timeout() - @pool_timeout,
+               pool_timeout: @pool_timeout
              ) do
         :ok
       end
@@ -27,7 +30,8 @@ defmodule HttpcBench.Client.Finch do
                Config.url(),
                Config.post_headers(),
                Config.post_body(),
-               timeout: Config.timeout()
+               receive_timeout: Config.timeout() - @pool_timeout,
+               pool_timeout: @pool_timeout
              ) do
         :ok
       else
@@ -48,7 +52,7 @@ defmodule HttpcBench.Client.Finch do
     {:ok, _pid} =
       Finch.start_link(
         name: MyFinch,
-        pools: %{shp => [size: pool_size, count: pool_count, min_ready: pool_size, type: :eager]}
+        pools: %{shp => [size: pool_size, count: pool_count]}
       )
 
     :ok
