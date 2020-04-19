@@ -71,7 +71,7 @@ resource "aws_instance" "server" {
     server_host = ""
     server_path = ""
     test_function = ""
-    after_install = "MIX_ENV=prod mix run --no-halt run_server.exs"
+    after_install = ""
   })
 
   tags = {
