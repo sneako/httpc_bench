@@ -12,6 +12,7 @@ config :httpc_bench,
   clients: [
     # HttpcBench.Client.MachineGun,
     # HttpcBench.Client.Buoy,
+    HttpcBench.Client.WarmedFinch,
     HttpcBench.Client.Finch,
     HttpcBench.Client.Mojito,
     # HttpcBench.Client.Dlhttpc,
