@@ -10,7 +10,7 @@ defmodule HttpcBench.Client.Finch do
     try do
       with {:ok, _} <-
              Finch.request(MyFinch, :get, Config.url(), Config.headers(), nil,
-               receive_timeout: Config.timeout() - @pool_timeout,
+               receive_timeout: Config.timeout(),
                pool_timeout: @pool_timeout
              ) do
         :ok
@@ -30,7 +30,7 @@ defmodule HttpcBench.Client.Finch do
                Config.url(),
                Config.post_headers(),
                Config.post_body(),
-               receive_timeout: Config.timeout() - @pool_timeout,
+               receive_timeout: Config.timeout(),
                pool_timeout: @pool_timeout
              ) do
         :ok
@@ -47,12 +47,10 @@ defmodule HttpcBench.Client.Finch do
   end
 
   def start(pool_size, pool_count) do
-    shp = shp(Config.url())
-
     {:ok, _pid} =
       Finch.start_link(
         name: MyFinch,
-        pools: %{shp => [size: pool_size, count: pool_count]}
+        pools: %{Config.url() => [size: pool_size, count: pool_count]}
       )
 
     :ok
@@ -62,11 +60,5 @@ defmodule HttpcBench.Client.Finch do
     Supervisor.stop(MyFinch.Supervisor)
 
     :ok
-  end
-
-  def shp(url) do
-    uri = URI.parse(url)
-
-    {String.to_atom(uri.scheme), uri.host, uri.port}
   end
 end
