@@ -1,4 +1,4 @@
-defmodule HttpcBench.Client.WarmedFinch do
+defmodule HttpcBench.Client.RoundRobinFinch do
   @behaviour HttpcBench.Client
   alias HttpcBench.Config
 
@@ -43,22 +43,11 @@ defmodule HttpcBench.Client.WarmedFinch do
   end
 
   def start(pool_size, pool_count) do
-    shp = shp(Config.url())
-
     {:ok, _pid} =
       Finch.start_link(
         name: MyFinch,
-        pools: %{shp => [size: pool_size, count: pool_count]}
+        pools: %{Config.url() => [size: pool_size, count: pool_count, strategy: :round_robin]}
       )
-
-    Task.async_stream(
-      1..1024,
-      fn _ ->
-        get()
-      end,
-      max_concurrency: System.schedulers_online() * 3
-    )
-    |> Stream.run()
 
     :ok
   end
@@ -67,11 +56,5 @@ defmodule HttpcBench.Client.WarmedFinch do
     Supervisor.stop(MyFinch.Supervisor)
 
     :ok
-  end
-
-  def shp(url) do
-    uri = URI.parse(url)
-
-    {String.to_atom(uri.scheme), uri.host, uri.port}
   end
 end
