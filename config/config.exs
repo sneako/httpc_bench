@@ -12,9 +12,9 @@ config :httpc_bench,
   clients: [
     # HttpcBench.Client.MachineGun,
     # HttpcBench.Client.Buoy,
-    HttpcBench.Client.RoundRobinFinch,
-    HttpcBench.Client.Finch,
     HttpcBench.Client.Mojito,
+    HttpcBench.Client.RoundRobinFinch,
+    HttpcBench.Client.Finch
     # HttpcBench.Client.Dlhttpc,
     # HttpcBench.Client.Hackney,
     # HttpcBench.Client.Httpc,

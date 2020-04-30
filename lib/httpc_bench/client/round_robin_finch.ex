@@ -7,7 +7,7 @@ defmodule HttpcBench.Client.RoundRobinFinch do
   def get do
     try do
       with {:ok, _} <-
-             Finch.request(MyFinch, :get, Config.url(), Config.headers(), nil,
+             Finch.request(RoundRobinFinch, :get, Config.url(), Config.headers(), nil,
                receive_timeout: Config.timeout()
              ) do
         :ok
@@ -22,7 +22,7 @@ defmodule HttpcBench.Client.RoundRobinFinch do
     try do
       with {:ok, _} <-
              Finch.request(
-               MyFinch,
+               RoundRobinFinch,
                :post,
                Config.url(),
                Config.post_headers(),
@@ -45,7 +45,7 @@ defmodule HttpcBench.Client.RoundRobinFinch do
   def start(pool_size, pool_count) do
     {:ok, _pid} =
       Finch.start_link(
-        name: MyFinch,
+        name: RoundRobinFinch,
         pools: %{Config.url() => [size: pool_size, count: pool_count, strategy: :round_robin]}
       )
 
@@ -53,7 +53,7 @@ defmodule HttpcBench.Client.RoundRobinFinch do
   end
 
   def stop do
-    Supervisor.stop(MyFinch.Supervisor)
+    Supervisor.stop(RoundRobinFinch.Supervisor)
 
     :ok
   end
