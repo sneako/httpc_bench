@@ -18,8 +18,7 @@ defmodule HttpcBench do
 
   defp print_results(opts) do
     for concurrency <- Config.concurrencies(),
-        pool_size <- Config.pool_sizes(),
-        pool_count <- Config.pool_counts(),
+        {pool_count, pool_size} <- [{2048, 1}, {256, 8}, {128, 16}, {64, 32}],
         client <- Config.clients() do
       result(client, concurrency, pool_size, pool_count)
       |> print_result(opts)
