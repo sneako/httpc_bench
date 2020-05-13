@@ -79,10 +79,10 @@ resource "aws_instance" "server" {
   }
 }
 
-output "client_public_ip" {
-  value = aws_instance.client.public_ip
+output "client" {
+  value = "ssh ec2-user@${aws_instance.client.public_ip}"
 }
 
-output "server_public_ip" {
-  value = aws_instance.server.public_ip
+output "server" {
+  value = "ssh ec2-user@${aws_instance.server.public_ip}"
 }

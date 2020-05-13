@@ -21,12 +21,12 @@ variable "ssh_key_name" {
 
 variable "erlang_version" {
   type    = string
-  default = "22.2.8"
+  default = "23.0"
 }
 
 variable "elixir_version" {
   type    = string
-  default = "1.10.2-otp-22"
+  default = "1.10.3-otp-22"
 }
 
 variable "request_path" {

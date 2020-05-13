@@ -14,6 +14,7 @@ config :httpc_bench,
     HttpcBench.Client.Buoy,
     HttpcBench.Client.Mojito,
     HttpcBench.Client.Finch,
+    HttpcBench.Client.FinchSocket,
     HttpcBench.Client.Hackney
     # HttpcBench.Client.Dlhttpc,
     # HttpcBench.Client.Httpc,
