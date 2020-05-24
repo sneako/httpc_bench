@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :logger, level: :warn
+config :logger, level: :info
 
 config :httpc_bench,
   # one of: [:text, :html, :csv]
@@ -10,11 +10,13 @@ config :httpc_bench,
   pool_sizes: [256, 192, 128, 96, 64, 32],
   pool_counts: [32, 16, 8, 4],
   clients: [
-    HttpcBench.Client.MachineGun,
-    HttpcBench.Client.Buoy,
-    HttpcBench.Client.Mojito,
-    HttpcBench.Client.Finch,
-    HttpcBench.Client.Hackney
+    HttpcBench.Client.H2Finch,
+    # HttpcBench.Client.Mojito
+    # HttpcBench.Client.MachineGun,
+    # HttpcBench.Client.Buoy,
+    # HttpcBench.Client.Mojito,
+    # HttpcBench.Client.Finch,
+    # HttpcBench.Client.Hackney
     # HttpcBench.Client.Dlhttpc,
     # HttpcBench.Client.Httpc,
     # HttpcBench.Client.Ibrowse

@@ -58,7 +58,7 @@ defmodule HttpcBench.Config do
   end
 
   def url do
-    "http://#{@host}:#{@port}#{@path}"
+    "https://#{@host}:#{@port}#{@path}"
   end
 
   @buoy_url {:buoy_url, "#{@host}:#{@port}", @host, @path, @port, :http}

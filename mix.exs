@@ -26,7 +26,6 @@ defmodule HttpcBench.MixProject do
       {:hackney, "~> 1.15.1"},
       {:ibrowse, "~> 4.4.1"},
       {:machine_gun, "~> 0.1.5"},
-      # {:finch, github: "keathley/finch", branch: "round-robin"},
       {:finch, github: "keathley/finch", branch: "master"},
       # {:finch, path: "../../keathley/finch"},
       {:mojito, git: "https://github.com/appcues/mojito.git"},
