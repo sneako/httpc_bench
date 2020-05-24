@@ -85,5 +85,5 @@ defmodule HttpcBench.Config do
     @headers
   end
 
-  def post_headers, do: [{"content-type", "application/json"}]
+  def post_headers, do: [{"content-type", "application/json"}] ++ @headers
 end

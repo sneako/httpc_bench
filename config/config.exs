@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :logger, level: :info
+config :logger, level: :warn
 
 config :httpc_bench,
   # one of: [:text, :html, :csv]
@@ -11,7 +11,7 @@ config :httpc_bench,
   pool_counts: [32, 16, 8, 4],
   clients: [
     HttpcBench.Client.H2Finch,
-    # HttpcBench.Client.Mojito
+    HttpcBench.Client.H2Mojito
     # HttpcBench.Client.MachineGun,
     # HttpcBench.Client.Buoy,
     # HttpcBench.Client.Mojito,
@@ -29,6 +29,8 @@ config :httpc_bench,
   test_function: :get,
   pipelining: 1024,
   timeout: 1_000,
-  headers: [{"connection", "keep-alive"}]
+  headers: []
+
+# headers: [{"connection", "keep-alive"}]
 
 import_config "#{Mix.env()}*.exs"
