@@ -99,5 +99,5 @@ defmodule HttpcBench.Config do
 
   def post_headers, do: [{"content-type", "application/json"}] ++ @headers
 
-  def h2_post_headers, do: [{"content-type", "application/json"}] ++ @h2_headers
+  def h2_post_headers, do: [{"content-type", "application/json"}]
 end

@@ -7,15 +7,18 @@ config :httpc_bench,
   output: :csv,
   iterations: 500_000,
   concurrencies: [4096, 3064, 2048, 1024],
-  pool_sizes: [256, 192, 128, 96, 64, 32],
-  pool_counts: [32, 16, 8, 4],
+  # pool_sizes: [256, 192, 128, 96, 64, 32],
+  pool_sizes: [1],
+  pool_counts: [2048, 1024, 512, 256],
+  # pool_counts: [32, 16, 8, 4],
   clients: [
-    HttpcBench.Client.H2Mojito,
+    # HttpcBench.Client.H2Mojito,
     HttpcBench.Client.H2Finch,
+    HttpcBench.Client.H2MachineGun
     # HttpcBench.Client.MachineGun,
     # HttpcBench.Client.Buoy,
-    HttpcBench.Client.Mojito,
-    HttpcBench.Client.Finch
+    # HttpcBench.Client.Mojito,
+    # HttpcBench.Client.Finch
     # HttpcBench.Client.Hackney
     # HttpcBench.Client.Dlhttpc,
     # HttpcBench.Client.Httpc,
