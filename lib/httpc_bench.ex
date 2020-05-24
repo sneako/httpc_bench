@@ -6,7 +6,7 @@ defmodule HttpcBench do
   alias HttpcBench.Config
 
   def run_server do
-    # HttpcBench.Server.start([], [])
+    HttpcBench.Server.start([], [])
     HttpcBench.H2Server.start()
   end
 

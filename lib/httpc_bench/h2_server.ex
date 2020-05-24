@@ -10,7 +10,7 @@ defmodule HttpcBench.H2Server do
         scheme: :https,
         plug: HttpcBench.Router,
         options: [
-          port: HttpcBench.Config.port(),
+          port: HttpcBench.Config.h2_port(),
           cipher_suite: :strong,
           certfile: Path.join([@fixtures_dir, "selfsigned.pem"]),
           keyfile: Path.join([@fixtures_dir, "selfsigned_key.pem"]),

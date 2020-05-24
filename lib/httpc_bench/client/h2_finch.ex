@@ -7,7 +7,7 @@ defmodule HttpcBench.Client.H2Finch do
   def get do
     try do
       with {:ok, _} <-
-             Finch.request(H2Finch, :get, Config.url(), Config.headers(), nil,
+             Finch.request(H2Finch, :get, Config.h2_url(), Config.h2_headers(), nil,
                receive_timeout: Config.timeout()
              ) do
         :ok
@@ -29,8 +29,8 @@ defmodule HttpcBench.Client.H2Finch do
              Finch.request(
                H2Finch,
                :post,
-               Config.url(),
-               Config.post_headers(),
+               Config.h2_url(),
+               Config.h2_post_headers(),
                Config.post_body(),
                receive_timeout: Config.timeout()
              ) do
@@ -52,7 +52,7 @@ defmodule HttpcBench.Client.H2Finch do
       Finch.start_link(
         name: H2Finch,
         pools: %{
-          Config.url() => [
+          Config.h2_url() => [
             size: pool_size,
             count: pool_count,
             protocol: :http2,

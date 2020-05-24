@@ -5,8 +5,8 @@ defmodule HttpcBench.Client.H2Mojito do
   def get do
     request = %Mojito.Request{
       method: :get,
-      url: Config.url(),
-      headers: Config.headers(),
+      url: Config.h2_url(),
+      headers: Config.h2_headers(),
       opts: [timeout: Config.timeout(), transport_opts: [verify: :verify_none]]
     }
 
@@ -16,8 +16,8 @@ defmodule HttpcBench.Client.H2Mojito do
   def post do
     request = %Mojito.Request{
       method: :post,
-      url: Config.url(),
-      headers: Config.post_headers(),
+      url: Config.h2_url(),
+      headers: Config.h2_post_headers(),
       body: Config.post_body(),
       opts: [timeout: Config.timeout(), transport_opts: [verify: :verify_none]]
     }

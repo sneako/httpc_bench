@@ -39,10 +39,16 @@ defmodule HttpcBench.Config do
     @clients
   end
 
-  @port Application.get_env(:httpc_bench, :port)
+  @port Application.get_env(:httpc_bench, :port, 8080)
 
   def port do
     @port
+  end
+
+  @h2_port Application.get_env(:httpc_bench, :h2_port, 8081)
+
+  def h2_port do
+    @h2_port
   end
 
   @host Application.get_env(:httpc_bench, :host)
@@ -58,7 +64,11 @@ defmodule HttpcBench.Config do
   end
 
   def url do
-    "https://#{@host}:#{@port}#{@path}"
+    "http://#{@host}:#{@port}#{@path}"
+  end
+
+  def h2_url do
+    "https://#{@host}:#{@h2_port}#{@path}"
   end
 
   @buoy_url {:buoy_url, "#{@host}:#{@port}", @host, @path, @port, :http}
@@ -85,5 +95,9 @@ defmodule HttpcBench.Config do
     @headers
   end
 
+  def h2_headers, do: []
+
   def post_headers, do: [{"content-type", "application/json"}] ++ @headers
+
+  def h2_post_headers, do: [{"content-type", "application/json"}] ++ @h2_headers
 end
