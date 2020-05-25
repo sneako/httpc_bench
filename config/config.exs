@@ -9,12 +9,13 @@ config :httpc_bench,
   concurrencies: [4096, 3064, 2048, 1024],
   # pool_sizes: [256, 192, 128, 96, 64, 32],
   pool_sizes: [1],
-  pool_counts: [2048, 1024, 512, 256],
-  # pool_counts: [32, 16, 8, 4],
+  # pool_counts: [2048, 1024, 512, 256],
+  pool_counts: [256, 128, 96, 64, 32],
   clients: [
     # HttpcBench.Client.H2Mojito,
+    # HttpcBench.Client.H2MachineGun,
     HttpcBench.Client.H2Finch,
-    HttpcBench.Client.H2MachineGun
+    HttpcBench.Client.H2RoundRobinFinch
     # HttpcBench.Client.MachineGun,
     # HttpcBench.Client.Buoy,
     # HttpcBench.Client.Mojito,
