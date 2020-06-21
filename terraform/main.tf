@@ -65,14 +65,7 @@ resource "aws_instance" "server" {
   vpc_security_group_ids = [aws_security_group.default.id]
   key_name               = var.ssh_key_name
 
-  user_data = templatefile("${path.module}/user_data.sh", {
-    erlang_version = var.erlang_version
-    elixir_version = var.elixir_version
-    server_host = ""
-    server_path = ""
-    test_function = ""
-    after_install = ""
-  })
+  user_data = file("${path.module}/test_server.sh")
 
   tags = {
     Name = "httpc_bench_server"
