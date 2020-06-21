@@ -9,7 +9,7 @@ sysctl -w net.core.netdev_max_backlog=10000
 sysctl -p
 
 # prereqs
-yum install pcre-devel openssl-devel gcc curl -y
+yum install pcre-devel openssl-devel gcc curl htop -y
 
 # add the repo:
 wget https://openresty.org/package/amazon/openresty.repo
