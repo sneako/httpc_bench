@@ -6,10 +6,9 @@ defmodule HttpcBench.Client.H2Finch do
 
   def get do
     try do
-      with {:ok, _} <-
-             Finch.request(H2Finch, :get, Config.h2_url(), Config.h2_headers(), nil,
-               receive_timeout: Config.timeout()
-             ) do
+      req = Finch.build("GET", Config.h2_url(), Config.h2_headers())
+
+      with {:ok, _} <- Finch.request(req, H2Finch, receive_timeout: Config.timeout()) do
         :ok
       else
         error ->
@@ -25,15 +24,15 @@ defmodule HttpcBench.Client.H2Finch do
 
   def post do
     try do
-      with {:ok, _} <-
-             Finch.request(
-               H2Finch,
-               :post,
-               Config.h2_url(),
-               Config.h2_post_headers(),
-               Config.post_body(),
-               receive_timeout: Config.timeout()
-             ) do
+      req =
+        Finch.build(
+          "POST",
+          Config.h2_url(),
+          Config.h2_post_headers(),
+          Config.post_body()
+        )
+
+      with {:ok, _} <- Finch.request(req, H2Finch, receive_timeout: Config.timeout()) do
         :ok
       else
         error ->
