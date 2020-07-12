@@ -4,7 +4,7 @@ echo "* hard nofile 102400" >> /etc/security/limits.conf
 echo "* soft nofile 102400" >> /etc/security/limits.conf
 sysctl -w fs.file-max=102400
 sysctl -w net.ipv4.ip_local_port_range="1024 65535"
-sysctl -w net.core.somaxconn=2048
+sysctl -w net.core.somaxconn=65535
 sysctl -w net.core.netdev_max_backlog=10000
 sysctl -p
 
@@ -44,10 +44,13 @@ events {
 http {
   access_log off;
   error_log off;
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
 
 	server {
-		listen 443 ssl http2 default_server backlog=2048;
-		listen [::]:443 ssl http2 default_server backlog=2048;
+		listen 443 ssl http2 default_server backlog=65535;
+		listen [::]:443 ssl http2 default_server backlog=65535;
 
 		root /var/www/html;
 
@@ -77,8 +80,8 @@ http {
 	server {
     keepalive_requests 100;
     keepalive_timeout 60;
-    listen         80 backlog=2048;
-    listen    [::]:80 backlog=2048;
+    listen         80 backlog=65535;
+    listen    [::]:80 backlog=65535;
 
 		location / {
        echo "Hello world!";
