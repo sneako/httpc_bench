@@ -35,8 +35,6 @@ openssl req -newkey rsa:4096 \
 
 echo "
 worker_processes auto; 
-error_log  logs/error.log;
-pid        logs/nginx.pid;
 worker_rlimit_nofile 102400;
 
 events {
@@ -44,8 +42,8 @@ events {
 }
 
 http {
-  keepalive_requests 10000;
-  keepalive_timeout 600;
+  access_log off;
+  error_log off;
 
 	server {
 		listen 443 ssl http2 default_server backlog=2048;
@@ -77,9 +75,11 @@ http {
 
 
 	server {
+    keepalive_requests 100;
+    keepalive_timeout 60;
     listen         80 backlog=2048;
     listen    [::]:80 backlog=2048;
-    server_name    example.com;
+
 		location / {
        echo "Hello world!";
 		}
